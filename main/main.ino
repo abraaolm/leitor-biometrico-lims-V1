@@ -4,8 +4,8 @@
 #include <LiquidCrystal_I2C.h>
 #include <Arduino.h>
 
-#define pinRx 8
-#define pinTx 7
+const int pinRx = 8;
+const int pinTx = 7;
 
 const int led_verde = 10;
 const int led_vermelho = 9;

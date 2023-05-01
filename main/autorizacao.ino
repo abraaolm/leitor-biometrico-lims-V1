@@ -18,8 +18,9 @@ void autorizado(){
   buzzer_pi();
   //mensagem1("Acesso Permitido");
   delay(700);
-  digitalWrite(led_verde, LOW);
   digitalWrite(rele, LOW);
+  delay(700);
+  digitalWrite(led_verde, LOW);
   delay(200);
   mensagem("Insira a Digital");
   return finger.fingerID;

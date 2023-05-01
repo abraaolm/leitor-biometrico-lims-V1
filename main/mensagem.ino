@@ -3,11 +3,9 @@
 extern String lastMsg;
 
 void mensagem(String msg) {
-  
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(msg);
-
   if (msg.length() > 16) {
     delay(500);
     for (int i = 0; i < msg.length() - 15; i++) {
@@ -19,12 +17,10 @@ void mensagem(String msg) {
   lastMsg = "";
 }
 
-void mensagem2(String msg) {
-
+void mensagem1(String msg) {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(msg);
-
   if (msg.length() > 16) {
     delay(500);
     for (int i = 0; i < msg.length() - 15; i++) {
@@ -38,12 +34,10 @@ void mensagem2(String msg) {
   lastMsg = "";
 }
 
-void mensagem1(String msg) {
-
+void mensagem2(String msg) {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(msg);
-
   if (msg.length() > 16) {
     delay(500);
     for (int i = 0; i < msg.length() - 15; i++) {

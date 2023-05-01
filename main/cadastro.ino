@@ -57,27 +57,27 @@ uint8_t getFingerprintEnroll() {
         Serial.print(".");
         break;
       case FINGERPRINT_PACKETRECIEVEERR:
-        Serial.println("Communication error");
+        Serial.println("Erro na comunicacao");
         lcd.clear();
-        lcd.print("Communication error");
+        lcd.print("Erro na comunicacao");
         falha();
         delay(1500);
         lcd.clear();
         lcd.print("Aguardando digital para cadastro #");
         break;
       case FINGERPRINT_IMAGEFAIL:
-        Serial.println("Imaging error");
+        Serial.println("Erro na Imagem");
         lcd.clear();
-        lcd.print("Imaging error");
+        lcd.print("Erro na Imagem");
         falha();
         delay(1500);
         lcd.clear();
         lcd.print("Aguardando digital para cadastro #");
         break;
       default:
-        Serial.println("Unknown error");
+        Serial.println("Erro Desconhecido");
         lcd.clear();
-        lcd.print("Unknown error");
+        lcd.print("Erro Desconhecido");
         falha();
         delay(1500);
         lcd.clear();
@@ -92,9 +92,9 @@ uint8_t getFingerprintEnroll() {
       Serial.println("Image converted");
       break;
     case FINGERPRINT_IMAGEMESS:
-      Serial.println("Image too messy");
+      Serial.println("Image muito baguncada");
       lcd.clear();
-      lcd.print("Image too messy");
+      lcd.print("Imagem muito baguncada");
       falha();
       delay(1000);
       lcd.clear();
@@ -109,9 +109,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
       return p;
     case FINGERPRINT_PACKETRECIEVEERR:
-      Serial.println("Communication error");
+      Serial.println("Erro na comunicacao");
       lcd.clear();
-      lcd.print("Communication error");
+      lcd.print("Erro na comunicacao");
       falha();
       delay(1000);
       lcd.clear();
@@ -126,9 +126,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
       return p;
     case FINGERPRINT_FEATUREFAIL:
-      Serial.println("Could not find fingerprint features");
+      Serial.println("Nao foi possível encontrar recursos de impressão digital");
       lcd.clear();
-      lcd.print("Could not find fingerprint features");
+      lcd.print("Nao foi possível encontrar recursos de impressão digital");
       falha();
       delay(1000);
       lcd.clear();
@@ -143,9 +143,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
       return p;
     case FINGERPRINT_INVALIDIMAGE:
-      Serial.println("Could not find fingerprint features");
+      Serial.println("Nao foi possível encontrar recursos de impressão digital");
       lcd.clear();
-      lcd.print("Could not find fingerprint features");
+      lcd.print("Nao foi possível encontrar recursos de impressão digital");
       falha();
       delay(1000);
       lcd.clear();
@@ -160,9 +160,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
       return p;
     default:
-      Serial.println("Unknown error");
+      Serial.println("Erro Desconhecido");
       lcd.clear();
-      lcd.print("Unknown error");
+      lcd.print("Erro Desconhecido");
       falha();
       delay(1000);
       lcd.clear();
@@ -209,27 +209,27 @@ uint8_t getFingerprintEnroll() {
         Serial.print(".");
         break;
       case FINGERPRINT_PACKETRECIEVEERR:
-        Serial.println("Communication error");
+        Serial.println("Erro na comunicacao");
         lcd.clear();
-        lcd.print("Communication error");
+        lcd.print("Erro na comunicacao");
         falha();
         delay(1500);
         lcd.clear();
         lcd.print("Aguardando digital para cadastro #");
         break;
       case FINGERPRINT_IMAGEFAIL:
-        Serial.println("Imaging error");
+        Serial.println("Erro na imagem");
         lcd.clear();
-        lcd.print("Imaging error");
+        lcd.print("Erro na imagem");
         falha();
         delay(1500);
         lcd.clear();
         lcd.print("Aguardando digital para cadastro #");
         break;
       default:
-        Serial.println("Unknown error");
+        Serial.println("Erro Desconhecido");
         lcd.clear();
-        lcd.print("Unknown error");
+        lcd.print("Erro Desconhecido");
         falha();
         delay(1500);
         lcd.clear();
@@ -244,9 +244,9 @@ uint8_t getFingerprintEnroll() {
       //Serial.println("Image converted");
       break;
     case FINGERPRINT_IMAGEMESS:
-      Serial.println("Image too messy");
+      Serial.println("Imagem muito confusa");
       lcd.clear();
-      lcd.print("Image too messy");
+      lcd.print("Imagem muito confusa");
       falha();
       delay(1000);
       lcd.clear();
@@ -261,9 +261,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
       return p;
     case FINGERPRINT_PACKETRECIEVEERR:
-      Serial.println("Communication error");
+      Serial.println("Erro na comunicacao");
       lcd.clear();
-      lcd.print("Communication error");
+      lcd.print("Erro na comunicacao");
       falha();
       delay(1000);
       lcd.clear();
@@ -278,9 +278,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
       return p;
     case FINGERPRINT_FEATUREFAIL:
-      Serial.println("Could not find fingerprint features");
+      Serial.println("Nao foi possível encontrar recursos de impressão digital");
       lcd.clear();
-      lcd.print("Could not find fingerprint features");
+      lcd.print("Nao foi possível encontrar recursos de impressão digital");
       falha();
       delay(1000);
       lcd.clear();
@@ -295,9 +295,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
       return p;
     case FINGERPRINT_INVALIDIMAGE:
-      Serial.println("Could not find fingerprint features");
+      Serial.println("Nao foi possível encontrar recursos de impressão digital");
       lcd.clear();
-      lcd.print("Could not find fingerprint features");
+      lcd.print("Nao foi possível encontrar recursos de impressão digital");
       falha();
       delay(1000);
       lcd.clear();
@@ -312,9 +312,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
       return p;
     default:
-      Serial.println("Unknown error");
+      Serial.println("Erro Desconhecido");
       lcd.clear();
-      lcd.print("Unknown error");
+      lcd.print("Erro Desconhecido");
       falha();
       delay(1000);
       lcd.clear();
@@ -337,9 +337,9 @@ uint8_t getFingerprintEnroll() {
     Serial.println("Digitais conferem!");
     
   } else if (p == FINGERPRINT_PACKETRECIEVEERR) {
-      Serial.println("Erro de comunicação");
+      Serial.println("Erro de comunicacao");
       lcd.clear();
-      lcd.print("Erro de comunicação");
+      lcd.print("Erro de comunicacao");
       falha();
       delay(1000);
       lcd.clear();
@@ -371,9 +371,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
     return p;
   } else {
-      Serial.println("Unknown error");
+      Serial.println("Erro Desconhecido");
       lcd.clear();
-      lcd.print("Unknown error");
+      lcd.print("Erro Desconhecido");
       falha();
       delay(1000);
       lcd.clear();
@@ -405,9 +405,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
 
   } else if (p == FINGERPRINT_PACKETRECIEVEERR) {
-      Serial.println("Erro de comunicação");
+      Serial.println("Erro de comunicacao");
       lcd.clear();
-      lcd.print("Erro de comunicação");
+      lcd.print("Erro de comunicacao");
       falha();
       delay(1000);
       lcd.clear();
@@ -422,9 +422,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
     return p;
   } else if (p == FINGERPRINT_BADLOCATION) {
-      Serial.println("Could not store in that location");
+      Serial.println("Nao é possível guardar nesse local");
       lcd.clear();
-      lcd.print("Could not store in that location");
+      lcd.print("Nao é possível guardar nesse local");
       falha();
       delay(1000);
       lcd.clear();
@@ -439,9 +439,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
     return p;
   } else if (p == FINGERPRINT_FLASHERR) {
-      Serial.println("Error writing to flash");
+      Serial.println("Erro ao gravar no flash");
       lcd.clear();
-      lcd.print("Error writing to flash");
+      lcd.print("Erro ao gravar no flash");
       falha();
       delay(1000);
       lcd.clear();
@@ -456,9 +456,9 @@ uint8_t getFingerprintEnroll() {
       lcd.print("Insira a Digital");
     return p;
   } else {
-      Serial.println("Unknown error");
+      Serial.println("Erro Desconhecido");
       lcd.clear();
-      lcd.print("Unknown error");
+      lcd.print("Erro Desconhecido");
       falha();
       delay(1000);
       lcd.clear();
@@ -476,7 +476,6 @@ uint8_t getFingerprintEnroll() {
 
   return true;
 }
-
 uint8_t readnumber(void) {
   uint8_t num = 0;
 
