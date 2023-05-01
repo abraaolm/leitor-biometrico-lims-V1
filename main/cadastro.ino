@@ -1,3 +1,7 @@
+extern const int led_verde;
+extern const int led_vermelho;
+extern const int led_amarelo;
+
 extern void buzzer_pi3();
 extern void buzzer_pi();
 extern void buzzer_pi2();
@@ -6,12 +10,6 @@ extern void erro_desconhecido();
 extern void imagem_confusa();
 extern void sucesso();
 extern void falha();
-
-//extern const int buzzer;
-extern const int led_verde;
-extern const int led_vermelho;
-//extern const int rele;
-extern const int led_amarelo;
 
 void adicionarDigital() {
 
@@ -27,7 +25,6 @@ void adicionarDigital() {
   lcd.setCursor(1, 0);
   lcd.print("Digite o ID # (entre 1 e 127) da digital que vai gravar...");
   buzzer_pi();
-
 
   id = readnumberadd();
   if (id == 0) {

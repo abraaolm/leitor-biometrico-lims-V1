@@ -38,6 +38,25 @@ void mensagem2(String msg) {
   lastMsg = "";
 }
 
+void mensagem1(String msg) {
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(msg);
+
+  if (msg.length() > 16) {
+    delay(500);
+    for (int i = 0; i < msg.length() - 15; i++) {
+      lcd.scrollDisplayLeft();
+      delay(300);
+    }
+    lcd.setCursor(0, 0); 
+  }
+  delay(2000);
+  lcd.clear();
+  lastMsg = "";
+}
+
 void sucesso(){
   digitalWrite(led_verde, HIGH);
   buzzer_pi();

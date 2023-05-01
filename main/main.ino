@@ -4,11 +4,6 @@
 #include <LiquidCrystal_I2C.h>
 #include <Arduino.h>
 
-//pinRele  = led verde
-//rele = rele
-//pinLed = led vermelho
-//led amarelo = led amarelo
-
 #define pinRx 8
 #define pinTx 7
 
@@ -22,21 +17,19 @@ extern const int buzzer;
 
 extern void removerDigital();
 extern void adicionarDigital();
-extern void autorizado();
-extern void nao_autorizado();
-extern void mensagem();
-extern void mensagem2();
 extern void sem_correspodencia();
 extern void nao_encontrou_digital();
 extern void erro_comunicacao();
 extern void imagem_confusa();
 extern void erro_desconhecido();
-extern void nokia();
+extern void autorizado();
+extern void mensagem();
+extern void mensagem1();
+extern void mensagem2();
 extern void buzzer_pi3();
 
 LiquidCrystal_I2C lcd(0x20,16,2);
 
-//#define pinLed 9
 #define pinButton 2
 #define pinButton2 3
 
@@ -52,10 +45,7 @@ void setup() {
   Serial.begin(9600);
   delay(100);
   finger.begin(57600);
-//pinRele  = led_verde
-//rele = rele
-//pinLed = led_vermelho
-//led amarelo = led_amarelo
+
   lcd.init();
   lcd.backlight(); 
   pinMode(led_verde, OUTPUT);
@@ -79,25 +69,23 @@ void setup() {
 
     lcd.setCursor(3,0);
     lcd.print("Iniciando...");
-    nokia();
-
     lcd.clear();
     lcd.print("Tudo Pronto");
-    lcd.setCursor(1,0);
+    lcd.setCursor(2,0);
     digitalWrite(led_verde, HIGH);
+    buzzer_pi3();
     delay(1000);
-
-
     lcd.setCursor(0,1); 
-    lcd.print("Versao cod. 1.5");
+    //lcd.print("Versao cod. 1.5");
     digitalWrite(led_verde, LOW);
+    lcd.clear();
+    mensagem("Insira a Digital");
 
 }
   else {
     digitalWrite(led_amarelo, HIGH);
     Serial.println("Sensor não encontrado, verifique a ligação");
     mensagem("Sensor nao encontrado, verifique a ligacao");
-    
     while (1) { 
       delay(1);
     }
@@ -195,5 +183,4 @@ uint8_t getFingerprintID() {
     return p;
   }
   autorizado();
-  
 }

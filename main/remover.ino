@@ -1,11 +1,8 @@
-extern void buzzer_pi();
-extern void buzzer_pi2();
-
-//extern const int buzzer;
 extern const int led_verde;
 extern const int led_vermelho;
-//extern const int rele;
 extern const int led_amarelo;
+extern void buzzer_pi();
+extern void buzzer_pi2();
 
 void removerDigital() {
     //Serial.println("Modo de remover digital ativado");
@@ -15,15 +12,11 @@ void removerDigital() {
     digitalWrite(led_amarelo, HIGH);
     buzzer_pi2();
     delay(1200);
-
     lcd.clear();
     lcd.setCursor(1,0);
     lcd.print("Insira o ID da digital que deseja remover: ");
-    
     buzzer_pi();
-
     //Serial.print("Insira o ID da digital que deseja remover: ");
-
     while (!Serial.available()) { // aguarda entrada no serial
     }
     int id = Serial.parseInt();
@@ -58,7 +51,6 @@ void removerDigital() {
         lcd.print("Insira a Digital");
     }
     delay(1500);
-
     lcd.clear();
     lcd.setCursor(1,0);
     lcd.print("Insira a Digital");
