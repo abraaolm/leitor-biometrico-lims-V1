@@ -8,6 +8,7 @@ extern const int led_verde;
 extern const int led_vermelho;
 extern const int rele;
 extern const int led_amarelo;
+extern void falha();
 
 void autorizado(){        
   digitalWrite(led_verde, HIGH);
@@ -93,4 +94,124 @@ void erro_desconhecido(){
   delay(200);
   mensagem("Insira a Digital");
   return finger.fingerID;
+}
+
+void erro_na_comunicacao_1(){
+  Serial.println("Erro na comunicacao");
+  lcd.clear();
+  lcd.print("Erro na comunicacao");
+  falha();
+  delay(1500);
+  lcd.clear();
+  lcd.print("Aguardando digital para cadastro #");
+}
+
+void erro_na_imagem_1(){
+  Serial.println("Erro na Imagem");
+  lcd.clear();
+  lcd.print("Erro na Imagem");
+  falha();
+  delay(1500);
+  lcd.clear();
+  lcd.print("Aguardando digital para cadastro #");
+}
+
+void erro_desconhecido_1(){
+  Serial.println("Erro Desconhecido");
+  lcd.clear();
+  lcd.print("Erro Desconhecido");
+  falha();
+  delay(1500);
+  lcd.clear();
+  lcd.print("Aguardando digital para cadastro #");
+}
+
+void imagem_baguncada(){
+  Serial.println("Image muito baguncada");
+  lcd.clear();
+  lcd.print("Imagem muito baguncada");
+  falha();
+  delay(1000);
+  lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.print("Cadastro Falhou");
+  digitalWrite(led_vermelho, HIGH);
+  digitalWrite(led_amarelo, LOW);
+  buzzer_pi3();
+  delay(1000);
+  digitalWrite(led_vermelho, LOW);
+  lcd.clear();
+  lcd.print("Insira a Digital");
+}
+
+void erro_na_comunicacao_2(){
+  Serial.println("Erro na comunicacao");
+  lcd.clear();
+  lcd.print("Erro na comunicacao");
+  falha();
+  delay(1000);
+  lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.print("Cadastro Falhou");
+  digitalWrite(led_vermelho, HIGH);
+  digitalWrite(led_amarelo, LOW);
+  buzzer_pi3();
+  delay(1000);
+  digitalWrite(led_vermelho, LOW);
+  lcd.clear();
+  lcd.print("Insira a Digital");
+}
+
+void nao_encontrou_digital_2(){
+  Serial.println("Nao foi possivel encontrar recursos de impressao digital");
+  lcd.clear();
+  lcd.print("Nao foi possivel encontrar recursos de impressao digital");
+  falha();
+  delay(1000);
+  lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.print("Cadastro Falhou");
+  digitalWrite(led_vermelho, HIGH);
+  digitalWrite(led_amarelo, LOW);
+  buzzer_pi3();
+  delay(1000);
+  digitalWrite(led_vermelho, LOW);
+  lcd.clear();
+  lcd.print("Insira a Digital"); 
+}
+
+void erro_desconhecido_2(){
+  Serial.println("Erro Desconhecido");
+  lcd.clear();
+  lcd.print("Erro Desconhecido");
+  falha();
+  delay(1000);
+  lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.print("Cadastro Falhou");
+  digitalWrite(led_vermelho, HIGH);
+  digitalWrite(led_amarelo, LOW);
+  buzzer_pi3();
+  delay(1000);
+  digitalWrite(led_vermelho, LOW);
+  lcd.clear();
+  lcd.print("Insira a Digital");
+}
+
+void nao_encontrou_recurso(){
+  Serial.println("Nao foi possivel encontrar recursos de impressão digital");
+  lcd.clear();
+  lcd.print("Nao foi possivel encontrar recursos de impressão digital");
+  falha();
+  delay(1000);
+  lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.print("Cadastro Falhou");
+  digitalWrite(led_vermelho, HIGH);
+  digitalWrite(led_amarelo, LOW);
+  buzzer_pi3();
+  delay(1000);
+  digitalWrite(led_vermelho, LOW);
+  lcd.clear();
+  lcd.print("Insira a Digital");
 }
