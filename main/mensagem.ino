@@ -37,3 +37,15 @@ void mensagem2(String msg) {
   lcd.clear();
   lastMsg = "";
 }
+
+void sucesso(){
+  digitalWrite(led_verde, HIGH);
+  buzzer_pi();
+  delay(400);
+  digitalWrite(led_verde, LOW);
+}
+void falha(){
+  digitalWrite(led_vermelho, HIGH);
+  buzzer_pi2();
+  digitalWrite(led_vermelho, LOW);
+}
