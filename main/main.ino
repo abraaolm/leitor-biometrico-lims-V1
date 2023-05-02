@@ -41,25 +41,19 @@ Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 uint8_t id;
 
 void setup() {
-
   Serial.begin(9600);
   delay(100);
   finger.begin(57600);
-
   lcd.init();
   lcd.backlight(); 
   pinMode(led_verde, OUTPUT);
   digitalWrite(led_verde, LOW);
-
   pinMode(led_amarelo, OUTPUT);
   digitalWrite(led_amarelo, LOW);
-
   pinMode(buzzer, OUTPUT);
   digitalWrite(buzzer, LOW);
-
-    pinMode(rele, OUTPUT);
+  pinMode(rele, OUTPUT);
   digitalWrite(rele, LOW);
-  
   pinMode(led_vermelho , OUTPUT);
   digitalWrite(led_vermelho, LOW);
   pinMode(pinButton, INPUT_PULLUP);
