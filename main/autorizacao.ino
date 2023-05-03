@@ -10,208 +10,220 @@ extern const int rele;
 extern const int led_amarelo;
 extern void falha();
 
+
 void autorizado(){        
   digitalWrite(led_verde, HIGH);
-  digitalWrite(rele, HIGH);
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Acesso Permitido");
-  buzzer_pi();
-  //mensagem1("Acesso Permitido");
-  delay(700);
   digitalWrite(rele, LOW);
+  lcd.clear();
+  lcd.setCursor(2,1);
+  lcd.print("ACESSO PERMITIDO");
+  buzzer_pi();
+  delay(700);
+  digitalWrite(rele, HIGH);
   delay(700);
   digitalWrite(led_verde, LOW);
   delay(200);
-  mensagem("Insira a Digital");
+  bem_vindo();
   return finger.fingerID;
 }
 
 void sem_correspodencia(){
   digitalWrite(led_vermelho, HIGH);
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Sem correspodencia");
+  lcd.setCursor(0,1);
+  lcd.print("SEM CORRESPONDENCIA");
   buzzer_pi();
-  mensagem1("Sem correspodencia");
-  delay(100);
+  delay(300);
   digitalWrite(led_vermelho, LOW);
-  delay(200);
-  mensagem("Insira a Digital");
+  delay(100);
+  bem_vindo();
 }
 
 void nao_encontrou_digital(){
   digitalWrite(led_amarelo, HIGH);
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Digital nao encontrada");
+  lcd.setCursor(4,1);
+  lcd.print("DIGITAL  NAO");
+  lcd.setCursor(5,2);
+  lcd.print("ENCONTRADA");
   buzzer_pi2();
-  mensagem1("Digital nao encontrada");
-  delay(100);
+  delay(500);
   digitalWrite(led_amarelo, LOW);
-  delay(200);
-  mensagem("Insira a Digital");
+  delay(100);
+  bem_vindo();
   return finger.fingerID;
 }
 
 void erro_comunicacao(){
   digitalWrite(led_amarelo, HIGH);
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Erro de comunicacao");
+  lcd.setCursor(0,1);
+  lcd.print("ERRO DE COMUNICACAO");
   buzzer_pi2();
-  mensagem1("Erro de comunicacao");
-  delay(100);
+  delay(1000);
   digitalWrite(led_amarelo, LOW);
   delay(200);
-  mensagem("Insira a Digital");
+  bem_vindo();
   return finger.fingerID;
 }
 
 void imagem_confusa(){
   digitalWrite(led_amarelo, HIGH);
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Imagem muito confusa");
+  lcd.setCursor(5,1);
+  lcd.print("IMAGEM ESTA");
+  lcd.setCursor(4,2);
+  lcd.print("MUITO CONFUSA");
   buzzer_pi2();
-  mensagem1("Imagem muito confusa");
-  delay(100);
+  delay(1000);
   digitalWrite(led_amarelo, LOW);
   delay(200);
-  mensagem("Insira a Digital");
+  bem_vindo();
   return finger.fingerID;
 }
 
 void erro_desconhecido(){
   digitalWrite(led_amarelo, HIGH);
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Erro desconhecido");
+  lcd.setCursor(2,1);
+  lcd.print("ERRO DESCONHECIDO");
   buzzer_pi2();
-  mensagem1("Erro desconhecido");
-  delay(100);
+  delay(1000);
   digitalWrite(led_amarelo, LOW);
   delay(200);
-  mensagem("Insira a Digital");
+  bem_vindo();
   return finger.fingerID;
 }
 
 void erro_na_comunicacao_1(){
-  Serial.println("Erro na comunicacao");
   lcd.clear();
-  lcd.print("Erro na comunicacao");
+  lcd.setCursor(0,1);
+  lcd.print("ERRO DE COMUNICACAO");
   falha();
   delay(1500);
   lcd.clear();
-  lcd.print("Aguardando digital para cadastro #");
+  lcd.setCursor(1,1);
+  lcd.print("Aguardando digital");
+  lcd.setCursor(2,2);
+  lcd.print("para cadastro #");
+
 }
 
 void erro_na_imagem_1(){
-  Serial.println("Erro na Imagem");
   lcd.clear();
-  lcd.print("Erro na Imagem");
+  lcd.setCursor(3,1);
+  lcd.print("ERRO NA IMAGEM");
   falha();
   delay(1500);
   lcd.clear();
-  lcd.print("Aguardando digital para cadastro #");
+  lcd.setCursor(1,1);
+  lcd.print("Aguardando digital");
+  lcd.setCursor(2,2);
+  lcd.print("para cadastro #");
 }
 
 void erro_desconhecido_1(){
-  Serial.println("Erro Desconhecido");
-  lcd.clear();
-  lcd.print("Erro Desconhecido");
+  lcd.setCursor(2,1);
+  lcd.print("ERRO DESCONHECIDO");
   falha();
   delay(1500);
   lcd.clear();
-  lcd.print("Aguardando digital para cadastro #");
+  lcd.setCursor(1,1);
+  lcd.print("Aguardando digital");
+  lcd.setCursor(2,2);
+  lcd.print("para cadastro #");
 }
 
 void imagem_baguncada(){
-  Serial.println("Image muito baguncada");
   lcd.clear();
-  lcd.print("Imagem muito baguncada");
+  lcd.setCursor(5,1);
+  lcd.print("IMAGEM ESTA");
+  lcd.setCursor(3,2);
+  lcd.print("MUITO BAGUNCADA");
   falha();
   delay(1000);
   lcd.clear();
-  lcd.setCursor(1,0);
-  lcd.print("Cadastro Falhou");
+  lcd.setCursor(3,1);
+  lcd.print("CADASTRO FALHOU");
   digitalWrite(led_vermelho, HIGH);
   digitalWrite(led_amarelo, LOW);
   buzzer_pi3();
   delay(1000);
   digitalWrite(led_vermelho, LOW);
-  lcd.clear();
-  lcd.print("Insira a Digital");
+  bem_vindo();
 }
 
 void erro_na_comunicacao_2(){
-  Serial.println("Erro na comunicacao");
-  lcd.clear();
-  lcd.print("Erro na comunicacao");
+  lcd.setCursor(0,1);
+  lcd.print("ERRO DE COMUNICACAO");
   falha();
   delay(1000);
   lcd.clear();
-  lcd.setCursor(1,0);
-  lcd.print("Cadastro Falhou");
+  lcd.setCursor(3,1);
+  lcd.print("CADASTRO FALHOU");
   digitalWrite(led_vermelho, HIGH);
   digitalWrite(led_amarelo, LOW);
   buzzer_pi3();
   delay(1000);
   digitalWrite(led_vermelho, LOW);
-  lcd.clear();
-  lcd.print("Insira a Digital");
+  bem_vindo();
 }
 
 void nao_encontrou_digital_2(){
-  Serial.println("Nao foi possivel encontrar recursos de impressao digital");
   lcd.clear();
-  lcd.print("Nao foi possivel encontrar recursos de impressao digital");
+  lcd.setCursor(2,1);
+  lcd.print("NAO FOI POSSIVEL");
+  lcd.setCursor(1,2);
+  lcd.print("ENCONTRAR RECURSOS");
+  lcd.setCursor(4,3);
+  lcd.print("DE IMPRESSAO");  
   falha();
   delay(1000);
   lcd.clear();
-  lcd.setCursor(1,0);
-  lcd.print("Cadastro Falhou");
+  lcd.setCursor(3,1);
+  lcd.print("CADASTRO FALHOU");
   digitalWrite(led_vermelho, HIGH);
   digitalWrite(led_amarelo, LOW);
   buzzer_pi3();
   delay(1000);
   digitalWrite(led_vermelho, LOW);
-  lcd.clear();
-  lcd.print("Insira a Digital"); 
+  bem_vindo();
 }
 
 void erro_desconhecido_2(){
-  Serial.println("Erro Desconhecido");
   lcd.clear();
-  lcd.print("Erro Desconhecido");
+  lcd.setCursor(2,1);
+  lcd.print("ERRO DESCONHECIDO");
   falha();
   delay(1000);
   lcd.clear();
-  lcd.setCursor(1,0);
-  lcd.print("Cadastro Falhou");
+  lcd.setCursor(3,1);
+  lcd.print("CADASTRO FALHOU");
   digitalWrite(led_vermelho, HIGH);
   digitalWrite(led_amarelo, LOW);
   buzzer_pi3();
   delay(1000);
   digitalWrite(led_vermelho, LOW);
-  lcd.clear();
-  lcd.print("Insira a Digital");
+  bem_vindo();
 }
 
 void nao_encontrou_recurso(){
-  Serial.println("Nao foi possivel encontrar recursos de impressão digital");
   lcd.clear();
-  lcd.print("Nao foi possivel encontrar recursos de impressão digital");
+  lcd.setCursor(2,1);
+  lcd.print("NAO FOI POSSIVEL");
+  lcd.setCursor(1,2);
+  lcd.print("ENCONTRAR RECURSOS");
+  lcd.setCursor(4,3);
+  lcd.print("DE IMPRESSAO");  
   falha();
   delay(1000);
   lcd.clear();
-  lcd.setCursor(1,0);
-  lcd.print("Cadastro Falhou");
+  lcd.setCursor(3,1);
+  lcd.print("CADASTRO FALHOU");
   digitalWrite(led_vermelho, HIGH);
   digitalWrite(led_amarelo, LOW);
   buzzer_pi3();
   delay(1000);
   digitalWrite(led_vermelho, LOW);
-  lcd.clear();
-  lcd.print("Insira a Digital");
+  bem_vindo();
 }

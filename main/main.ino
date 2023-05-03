@@ -4,6 +4,8 @@
 #include <LiquidCrystal_I2C.h>
 #include <Arduino.h>
 
+//SCL = SCL
+//SDA = SDA 
 const int pinRx = 50;
 const int pinTx = 51;
 
@@ -27,6 +29,7 @@ extern void mensagem();
 extern void mensagem1();
 extern void mensagem2();
 extern void buzzer_pi3();
+extern void bem_vindo();
 
 LiquidCrystal_I2C lcd(0x3F,20,4);
   
@@ -55,34 +58,38 @@ void setup() {
   digitalWrite(led_amarelo, LOW);
   pinMode(buzzer, OUTPUT);
   digitalWrite(buzzer, LOW);
+  //O rele utilizado é invertido, ele precisa inciar em HIGH, e caso queira aciona-lo, mande um pulso LOW
   pinMode(rele, OUTPUT);
-  digitalWrite(rele, LOW);
+  digitalWrite(rele, HIGH);
   pinMode(led_vermelho , OUTPUT);
   digitalWrite(led_vermelho, LOW);
   pinMode(pinButton, INPUT_PULLUP);
   pinMode(pinButton2, INPUT_PULLUP);
 
   if (finger.verifyPassword()) {
-
-    lcd.setCursor(3,0);
-    lcd.print("Iniciando...");
     lcd.clear();
-    lcd.print("Tudo Pronto");
-    lcd.setCursor(2,0);
+    lcd.setCursor(1,1);
+    lcd.print("Leitor biometrico");
+    lcd.setCursor(2,2);
+    lcd.print("esta funcionando");
+    lcd.setCursor(4,3);
+    lcd.print("corretamente");
     digitalWrite(led_verde, HIGH);
     buzzer_pi3();
     delay(1000);
-    lcd.setCursor(0,1); 
-    //lcd.print("Versao cod. 1.5");
     digitalWrite(led_verde, LOW);
-    lcd.clear();
-    mensagem("Insira a Digital");
+    bem_vindo();
 
 }
   else {
     digitalWrite(led_amarelo, HIGH);
-    Serial.println("Sensor não encontrado, verifique a ligação");
-    mensagem("Sensor nao encontrado, verifique a ligacao");
+  lcd.clear();
+  lcd.setCursor(4,1);
+  lcd.print("O sensor nao");
+  lcd.setCursor(2,2);
+  lcd.print(" foi encontrado.");
+  lcd.setCursor(0,3);
+  lcd.print("Verifique a ligacao!");
     while (1) { 
       delay(1);
     }
@@ -119,7 +126,7 @@ uint8_t getFingerprintID() {
   uint8_t p = finger.getImage();
   switch (p) {
     case FINGERPRINT_OK:
-      Serial.println("Imagem capturada");
+      //Serial.println("Imagem capturada");
       break;
     case FINGERPRINT_NOFINGER:
       return p;

@@ -21,16 +21,22 @@ extern void erro_desconhecido_2();
 void adicionarDigital() {
 
   lcd.clear();
-  lcd.setCursor(1,0);
-  lcd.print("Cadastro de digital");
+  lcd.setCursor(4,1);
+  lcd.print("MODO CADASTRO");
   digitalWrite(led_amarelo, HIGH);
   buzzer_pi3();
-  Serial.println("\nCadastro de digital");
-  Serial.println("Digite o ID # (entre 1 e 127) da digital que vai gravar...");
+  //Serial.println("\nCadastro de digital");
+  //Serial.println("Digite o ID # (entre 1 e 127) da digital que vai gravar...");
   delay(1000);
   lcd.clear();
-  lcd.setCursor(1, 0);
-  lcd.print("Digite o ID # (entre 1 e 127) da digital que vai gravar...");
+  lcd.setCursor(4,0);
+  lcd.print("Digite o ID #");
+  lcd.setCursor(3,1);
+  lcd.print("(entre 1 e 127)");
+  lcd.setCursor(4,2);
+  lcd.print("da digital que");
+  lcd.setCursor(5,3);
+  lcd.print("registrada:");
   buzzer_pi();
 
   id = readnumberadd();
@@ -47,10 +53,11 @@ void adicionarDigital() {
 uint8_t getFingerprintEnroll() {
 
   int p = -1;
-  Serial.print("Aguardando digital para cadastro #"); Serial.println(id);
       lcd.clear();
-      lcd.setCursor(1,0);
-      lcd.print("Aguardando digital para cadastro #");
+      lcd.setCursor(2,1);
+      lcd.print("INSIRA A DIGITAL");
+      lcd.setCursor(3,2);
+      lcd.print("PARA CADASTRO");
       sucesso();
       delay(500);
 
@@ -58,7 +65,6 @@ uint8_t getFingerprintEnroll() {
     p = finger.getImage();
     switch (p) {
       case FINGERPRINT_OK:
-        Serial.println("Image taken");
         break;
       case FINGERPRINT_NOFINGER:
         Serial.print(".");
@@ -78,7 +84,6 @@ uint8_t getFingerprintEnroll() {
   p = finger.image2Tz(1);
   switch (p) {
     case FINGERPRINT_OK:
-      Serial.println("Image converted");
       break;
     case FINGERPRINT_IMAGEMESS:
       imagem_baguncada();
@@ -96,32 +101,30 @@ uint8_t getFingerprintEnroll() {
       erro_desconhecido_2();
       return p;
   }
-
-  Serial.println("Retire o dedo");
       sucesso();
       lcd.clear();
-      lcd.setCursor(1,0);
-      lcd.print("Retire o dedo");
+      lcd.setCursor(4,1);
+      lcd.print("RETIRE O DEDO");
 
-  delay(1300);
+  delay(1000);
   p = 0;
   while (p != FINGERPRINT_NOFINGER) {
     p = finger.getImage();
   }
   Serial.print("ID "); Serial.println(id);
   p = -1;
-  Serial.println("Coloque o mesmo dedo novamente");
       sucesso();
       lcd.clear();
-      lcd.setCursor(1,0);
-      lcd.print("Coloque o mesmo dedo novamente");
+      lcd.setCursor(3,1);
+      lcd.print("INSIRA O MESMO");
+      lcd.setCursor(3,2);
+      lcd.print("DEDO NOVAMENTE");
       delay(500);
 
   while (p != FINGERPRINT_OK) {
     p = finger.getImage();
     switch (p) {
       case FINGERPRINT_OK:
-        Serial.println("Image taken");
         break;
       case FINGERPRINT_NOFINGER:
         Serial.print(".");
@@ -141,7 +144,6 @@ uint8_t getFingerprintEnroll() {
   p = finger.image2Tz(2);
   switch (p) {
     case FINGERPRINT_OK:
-      //Serial.println("Image converted");
       break;
     case FINGERPRINT_IMAGEMESS:
       imagem_baguncada();
@@ -160,31 +162,30 @@ uint8_t getFingerprintEnroll() {
       return p;
   }
 
-  Serial.print("Criando modelo para ID #");  Serial.println(id);
+  //Serial.print("Criando modelo para ID #");  Serial.println(id);
 
   p = finger.createModel();
   if (p == FINGERPRINT_OK) {
-    Serial.println("Digitais conferem!");
+    //Serial.println("Digitais conferem!");
 
   } else if (p == FINGERPRINT_PACKETRECIEVEERR) {
     erro_na_comunicacao_2();
     return p;
   } else if (p == FINGERPRINT_ENROLLMISMATCH) {
-      Serial.println("Digitais nao batem!");
       lcd.clear();
-      lcd.print("Digitais nao batem!");
+      lcd.setCursor(1,1);
+      lcd.print("DIGITAIS NAO BATEM");
       falha();
       delay(1000);
       lcd.clear();
-      lcd.setCursor(1,0);
-      lcd.print("Cadastro Falhou");
+      lcd.setCursor(3,1);
+      lcd.print("CADASTRO FALHOU");
       digitalWrite(led_vermelho, HIGH);
       digitalWrite(led_amarelo, LOW);
       buzzer_pi3();
       delay(1000);
       digitalWrite(led_vermelho, LOW);
-      lcd.clear();
-      lcd.print("Insira a Digital");
+      bem_vindo();
     return p;
   } else {
     erro_desconhecido_2();
@@ -194,54 +195,56 @@ uint8_t getFingerprintEnroll() {
   Serial.print("ID "); Serial.println(id);
   p = finger.storeModel(id);
   if (p == FINGERPRINT_OK) {
-    Serial.println("Armazenado com sucesso!");
       lcd.clear();
-      lcd.setCursor(1,0);
-      lcd.print("Armazenado com sucesso!");
+      lcd.setCursor(1,1);
+      lcd.print("CADASTRO REALIZADO");
+      lcd.setCursor(4,2);
+      lcd.print("COM SUCESSO");
       digitalWrite(led_verde, HIGH);
       digitalWrite(led_amarelo, LOW);
       buzzer_pi3();
       delay(1000);
       digitalWrite(led_verde, LOW);
-      lcd.clear();
-      lcd.print("Insira a Digital");
+      bem_vindo();  
 
   } else if (p == FINGERPRINT_PACKETRECIEVEERR) {
       erro_na_comunicacao_2();
     return p;
   } else if (p == FINGERPRINT_BADLOCATION) {
-      Serial.println("Nao é possível guardar nesse local");
       lcd.clear();
-      lcd.print("Nao é possível guardar nesse local");
+      lcd.setCursor(3,1);
+      lcd.print("NAO E POSSIVEL");
+      lcd.setCursor(1,2);
+      lcd.print("GRAVAR NESTE LOCAL");
       falha();
       delay(1000);
       lcd.clear();
-      lcd.setCursor(1,0);
-      lcd.print("Cadastro Falhou");
+      lcd.setCursor(3,1);
+      lcd.print("CADASTRO FALHOU");
       digitalWrite(led_vermelho, HIGH);
       digitalWrite(led_amarelo, LOW);
       buzzer_pi3();
       delay(1000);
       digitalWrite(led_vermelho, LOW);
-      lcd.clear();
-      lcd.print("Insira a Digital");
+      bem_vindo();
     return p;
   } else if (p == FINGERPRINT_FLASHERR) {
-      Serial.println("Erro ao gravar no flash");
       lcd.clear();
-      lcd.print("Erro ao gravar no flash");
+      lcd.setCursor(3,1);
+      lcd.print("ERRO AO GRAVAR");
+      lcd.setCursor(6,2);
+      lcd.print("NO FLASH");
       falha();
       delay(1000);
       lcd.clear();
-      lcd.setCursor(1,0);
-      lcd.print("Cadastro Falhou");
+      lcd.setCursor(3,1);
+      lcd.print("CADASTRO FALHOU");
       digitalWrite(led_vermelho, HIGH);
       digitalWrite(led_amarelo, LOW);
       buzzer_pi3();
       delay(1000);
       digitalWrite(led_vermelho, LOW);
-      lcd.clear();
-      lcd.print("Insira a Digital");
+      bem_vindo();
     return p;
   } else {
       erro_desconhecido_2();
