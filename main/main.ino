@@ -4,8 +4,8 @@
 #include <LiquidCrystal_I2C.h>
 #include <Arduino.h>
 
-const int pinRx = 8;
-const int pinTx = 7;
+const int pinRx = 50;
+const int pinTx = 51;
 
 const int led_verde = 10;
 const int led_vermelho = 9;
@@ -28,8 +28,8 @@ extern void mensagem1();
 extern void mensagem2();
 extern void buzzer_pi3();
 
-LiquidCrystal_I2C lcd(0x20,16,2);
-
+LiquidCrystal_I2C lcd(0x3F,20,4);
+  
 #define pinButton 2
 #define pinButton2 3
 
@@ -40,8 +40,11 @@ Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 uint8_t id;
 
+
 void setup() {
-  Serial.begin(9600);
+
+
+  Serial.begin(115200);
   delay(100);
   finger.begin(57600);
   lcd.init();
