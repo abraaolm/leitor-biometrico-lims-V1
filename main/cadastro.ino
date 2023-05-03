@@ -101,10 +101,10 @@ uint8_t getFingerprintEnroll() {
       erro_desconhecido_2();
       return p;
   }
-      sucesso();
       lcd.clear();
       lcd.setCursor(4,1);
       lcd.print("RETIRE O DEDO");
+      sucesso();
 
   delay(1000);
   p = 0;
@@ -113,12 +113,13 @@ uint8_t getFingerprintEnroll() {
   }
   Serial.print("ID "); Serial.println(id);
   p = -1;
-      sucesso();
+
       lcd.clear();
       lcd.setCursor(3,1);
       lcd.print("INSIRA O MESMO");
       lcd.setCursor(3,2);
       lcd.print("DEDO NOVAMENTE");
+      sucesso();
       delay(500);
 
   while (p != FINGERPRINT_OK) {
