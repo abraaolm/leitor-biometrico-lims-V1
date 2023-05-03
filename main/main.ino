@@ -14,6 +14,7 @@ const int led_vermelho = 9;
 const int rele = 11;
 const int led_amarelo = 12;
 const int buzzer = A1;
+const int pinoSensor = 8;
 
 extern const int buzzer;
 
@@ -79,7 +80,7 @@ void setup() {
     delay(1000);
     digitalWrite(led_verde, LOW);
     bem_vindo();
-
+Serial.println("  sucesso!");
 }
   else {
     digitalWrite(led_amarelo, HIGH);
@@ -102,7 +103,11 @@ void setup() {
 String lastMsg = "";
 
 void loop() {
-
+ //if(digitalRead(pinoSensor) == LOW){
+      //digitalWrite(led_verde, HIGH);
+      //delay(700);
+      //digitalWrite(led_verde, LOW);
+  //}//
   if (digitalRead(pinButton) == LOW) {
     removerDigital();
   }
