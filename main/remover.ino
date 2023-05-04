@@ -1,11 +1,18 @@
-extern const int led_verde;
-extern const int led_vermelho;
-extern const int led_amarelo;
-extern void buzzer_pi();
-extern void buzzer_pi2();
+extern const int led_verde; // Defina o pino do LED verde
+extern const int led_vermelho; // Defina o pino do LED vermelho
+extern const int led_amarelo; // Defina o pino do LED amarelo
+#include <Keypad.h>
+// Defina as funções buzzer_pi(), buzzer_pi2() e buzzer_pi3()
+
+extern const byte LINHAS; // Defina o número de linhas do teclado
+extern const byte COLUNAS; // Defina o número de colunas do teclado
+
+extern char TECLAS[LINHAS][COLUNAS];
+
+extern Keypad teclado_personalizado;
 
 void removerDigital() {
-    lcd.clear();
+lcd.clear();
     lcd.setCursor(4,1);
     lcd.print("MODO REMOVER");
     digitalWrite(led_amarelo, HIGH);
@@ -19,15 +26,21 @@ void removerDigital() {
     lcd.setCursor(2,3);
     lcd.print(" deseja remover:");
     buzzer_pi();
-    while (!Serial.available()) { // aguarda entrada no serial
+
+    String id_str = "";
+    while (id_str.length() < 8) { // aguarda entrada de 4 dígitos no teclado
+        char key = teclado_personalizado.getKey();
+        if (key >= '0' && key <= '9') {
+            id_str += key;
+            lcd.print(key);
+            buzzer_pi();
+        } else if (key == 'A') { // se a tecla A for pressionada, prossegue com a remoção
+            break;
+        }
     }
-    int id = Serial.parseInt();
-    //Serial.print("Removendo digital do ID ");
-    //Serial.println(id);
+    int id = id_str.toInt();
     int r = finger.deleteModel(id);
     if (r != FINGERPRINT_OK) {
-        //Serial.print("Erro ao remover digital: ");
-        //Serial.println("finger.errorCode");
         lcd.clear();
         lcd.setCursor(3,1);
         lcd.print("ERRO AO REMOVER");
@@ -38,10 +51,10 @@ void removerDigital() {
         delay(1000);
         bem_vindo();
     } else {
-        //Serial.println("Digital removida com sucesso!");
         lcd.clear();
         lcd.setCursor(5,1);
-        lcd.print("A DIGITAL") && lcd.print(id);
+        lcd.print("A DIGITAL ");
+        lcd.print(id);
         lcd.setCursor(4,2);
         lcd.print("FOI REMOVIDA");
         lcd.setCursor(5,3);
