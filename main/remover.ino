@@ -1,7 +1,7 @@
 extern const int led_verde; // Defina o pino do LED verde
 extern const int led_vermelho; // Defina o pino do LED vermelho
 extern const int led_amarelo; // Defina o pino do LED amarelo
-#include <Keypad.h>
+
 // Defina as funções buzzer_pi(), buzzer_pi2() e buzzer_pi3()
 
 extern const byte LINHAS; // Defina o número de linhas do teclado

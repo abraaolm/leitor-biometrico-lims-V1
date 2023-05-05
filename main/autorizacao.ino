@@ -17,6 +17,7 @@ void autorizado(){
   lcd.clear();
   lcd.setCursor(2,1);
   lcd.print("ACESSO PERMITIDO");
+    Serial.println(id);
   buzzer_pi();
   delay(700);
   digitalWrite(rele, HIGH);

@@ -27,6 +27,7 @@ const char TECLAS_MATRIZ[LINHAS][COLUNAS] = {
   {'7', '8', '9', 'C'},
   {'*', '0', '#', 'D'}
 };
+//id
 
 const byte PINOS_LINHAS[LINHAS] = {45, 43, 41, 39}; 
 const byte PINOS_COLUNAS[COLUNAS] = {37, 35, 33, 31};
@@ -67,7 +68,6 @@ bool modo_cadastro = false;
 bool modo_remover = false;
 
 void setup() {
-
 
   Serial.begin(115200);
   delay(100);
@@ -117,7 +117,7 @@ void setup() {
     }
   }
   if (grava) {
-    while (  getFingerprintEnroll() == -1 );
+    while (  getFingerprintEnroll(id) == -1 );
   }
 }
 
@@ -142,7 +142,7 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
       lcd.setCursor(4,1);
       lcd.print("PARA ENTRAR");
       lcd.setCursor(1,2);
-      lcd.print("NO MODO ADICIONAR");
+      lcd.print("NO MODO CADASTRO");
     } else if (leitura_teclas == 'D') { // Caso a tecla 'D' seja pressionada
       modo_remover = true;
       senha.reset(); // Limpa a variável senha
@@ -230,6 +230,7 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
   if (digitalRead(pinButton2) == LOW) {
     adicionarDigital();
   } 
+  //byte leitura = getFingerprintID();
   byte leitura = getFingerprintID();
 }
 

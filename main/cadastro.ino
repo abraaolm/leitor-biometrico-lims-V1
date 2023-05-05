@@ -18,7 +18,11 @@ extern void erro_na_comunicacao_2();
 extern void nao_encontrou_digital_2();
 extern void erro_desconhecido_2();
 
+
+
 void adicionarDigital() {
+
+
 
   lcd.clear();
   lcd.setCursor(4,1);
@@ -38,19 +42,30 @@ void adicionarDigital() {
   lcd.setCursor(5,3);
   lcd.print("registrada:");
   buzzer_pi();
+  
+  String id_str = "";
+  bool id_done = false;
 
-  id = readnumberadd();
-  if (id == 0) {
-    return;
+  while (!id_done) {
+      char key = teclado_personalizado.getKey();
+      if (key >= '0' && key <= '9') {
+          id_str += key;
+          lcd.print(key);
+          buzzer_pi();
+      } else if (key == 'A' && id_str.length() > 0) {
+          id_done = true;
+      }
   }
+
+  int id = id_str.toInt();
   Serial.print("Cadastrando ID #");
   Serial.println(id);
   delay(500);
   
-  while (!  getFingerprintEnroll() );
+  while (!getFingerprintEnroll(id));
 }
 
-uint8_t getFingerprintEnroll() {
+uint8_t getFingerprintEnroll(int id) {
 
   int p = -1;
       lcd.clear();
