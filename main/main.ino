@@ -19,7 +19,7 @@ const int buzzer = A1;
 const byte LINHAS = 4;
 const byte COLUNAS = 4;
 
-Password senha = Password("12345678");
+Password senha = Password("1");
 
 const char TECLAS_MATRIZ[LINHAS][COLUNAS] = {
   {'1', '2', '3', 'A'},
@@ -66,6 +66,7 @@ uint8_t id;
 
 bool modo_cadastro = false;
 bool modo_remover = false;
+bool passapadento = false;
 
 void setup() {
 
@@ -127,6 +128,7 @@ void loop() {
 
 char leitura_teclas = teclado_personalizado.getKey(); // Atribui a variável a leitura do teclado
 
+
 if (leitura_teclas) { // Se alguma tecla foi pressionada
     digitalWrite(buzzer, HIGH);
     delay(50);
@@ -155,22 +157,39 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
       lcd.setCursor(2,2);
       lcd.print("NO MODO REMOVER");
       
-    } else if (modo_cadastro) { // Caso estejamos no modo cadastro
-      if (leitura_teclas == 'A') { // Caso a tecla 'A' seja pressionada
+    } else if (leitura_teclas == 'A') { // Caso a tecla 'D' seja pressionada
+      passapadento = true;
+      senha.reset(); // Limpa a variável senha
+      Serial.println("digita a senha pra entrar");
+      lcd.clear();
+      lcd.setCursor(3,0);
+      lcd.print("DIGITE A SENHA");
+      lcd.setCursor(4,1);
+      lcd.print("PARA ENTRAR");
+      lcd.setCursor(2,2);
+      lcd.print("DESTRANCAR A PORTA");
+      
+    }else if (modo_cadastro) { // Caso estejamos no modo cadastro
+      if (leitura_teclas == '#') { // Caso a tecla 'A' seja pressionada
         if (senha.evaluate()) { // Verifica se a senha digitada está correta
           Serial.println("Liberado!");
           adicionarDigital();
-          digitalWrite(led_verde, HIGH);
-          delay(500);
-          digitalWrite(led_verde, LOW);
+          //digitalWrite(led_verde, HIGH);
+          //delay(500);
+          //digitalWrite(led_verde, LOW);
         } else {
           Serial.println("Senha incorreta!");
+          lcd.clear();
+          lcd.setCursor(3,1);
+          lcd.print("SENHA INCORRETA");
           digitalWrite(led_vermelho, HIGH);
-          delay(500);
+          buzzer_pi2();
+          delay(700);
           digitalWrite(led_vermelho, LOW);
+          bem_vindo();
         }
         modo_cadastro = false;
-      } else if (leitura_teclas == 'B') { // Caso a tecla 'B' seja pressionada
+      } else if (leitura_teclas == '*') { // Caso a tecla 'B' seja pressionada
         modo_cadastro = false;
         Serial.println("Operação cancelada");
         lcd.clear();
@@ -185,14 +204,14 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
         senha.append(leitura_teclas); // Salva o valor da tecla pressionada na variável senha
       }
     } else if (modo_remover) { // Caso estejamos no modo remover
-      if (leitura_teclas == 'A') { // Caso a tecla 'A' seja pressionada
+      if (leitura_teclas == '#') { // Caso a tecla 'A' seja pressionada
         if (senha.evaluate()) { // Verifica se a senha digitada está correta
           senha.reset(); // Limpa a senha
           Serial.println("Senha removida com sucesso!");
           removerDigital();
-          digitalWrite(led_verde, HIGH);
-          delay(500);
-          digitalWrite(led_verde, LOW);
+          ///digitalWrite(led_verde, HIGH);
+          ///delay(500);
+          //digitalWrite(led_verde, LOW);
         } else {
           Serial.println("Senha incorreta!");
           lcd.clear();
@@ -205,7 +224,7 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
           bem_vindo();
         }
         modo_remover = false;
-      } else if (leitura_teclas == 'B') { // Caso a tecla 'B' seja pressionada
+      } else if (leitura_teclas == '*') { // Caso a tecla 'B' seja pressionada
         modo_remover = false;
         Serial.println("Operação cancelada");
         lcd.clear();
@@ -215,11 +234,51 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
         delay(500);
 
         bem_vindo();
+      
       } else {
         Serial.print(leitura_teclas);
         senha.append(leitura_teclas); // Salva o valor da tecla pressionada na variável senha
       }
-    } else { // Caso não estejamos no modo cadastro ou remover
+    
+    }  
+    else if (passapadento) { // Caso estejamos no modo remover
+      if (leitura_teclas == '#') { // Caso a tecla 'A' seja pressionada
+        if (senha.evaluate()) { // Verifica se a senha digitada está correta
+          senha.reset(); // Limpa a senha
+          Serial.println("passapadento");
+          autorizado();
+          ///digitalWrite(led_verde, HIGH);
+          ///delay(500);
+          //digitalWrite(led_verde, LOW);
+        } else {
+          Serial.println("Senha incorreta!");
+          lcd.clear();
+          lcd.setCursor(3,1);
+          lcd.print("SENHA INCORRETA");
+          digitalWrite(led_vermelho, HIGH);
+          buzzer_pi2();
+          delay(700);
+          digitalWrite(led_vermelho, LOW);
+          bem_vindo();
+        }
+        passapadento = false;
+      } else if (leitura_teclas == '*') { // Caso a tecla 'B' seja pressionada
+        passapadento = false;
+        Serial.println("Operação cancelada");
+        lcd.clear();
+        lcd.setCursor(1,1);
+        lcd.print("OPERACAO CANCELADA");
+        buzzer_pi2();
+        delay(500);
+
+        bem_vindo();
+      
+      } else {
+        Serial.print(leitura_teclas);
+        senha.append(leitura_teclas); // Salva o valor da tecla pressionada na variável senha
+      }
+    
+    }else { // Caso não estejamos no modo cadastro ou remover
       Serial.println(leitura_teclas); // Exibe a tecla pressionada
     }
   }

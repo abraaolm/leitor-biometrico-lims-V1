@@ -23,8 +23,9 @@ void autorizado(){
   digitalWrite(rele, HIGH);
   delay(700);
   digitalWrite(led_verde, LOW);
-  delay(200);
+  
   bem_vindo();
+  delay(200);
   return finger.fingerID;
 }
 

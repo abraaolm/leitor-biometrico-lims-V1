@@ -34,7 +34,7 @@ lcd.clear();
             id_str += key;
             lcd.print(key);
             buzzer_pi();
-        } else if (key == 'A') { // se a tecla A for pressionada, prossegue com a remoção
+        } else if (key == '#') { // se a tecla A for pressionada, prossegue com a remoção
             break;
         }
     }
@@ -66,6 +66,6 @@ lcd.clear();
         digitalWrite(led_verde, LOW);
         bem_vindo();
     }
-    delay(1500);
-    bem_vindo();
+    //delay(1500);
+    //bem_vindo();
 }
