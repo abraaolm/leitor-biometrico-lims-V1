@@ -23,7 +23,7 @@ lcd.clear();
     lcd.print("Insira o ID da");
     lcd.setCursor(5,2);
     lcd.print("digital que");
-    lcd.setCursor(2,3);
+    lcd.setCursor(1,3);
     lcd.print(" deseja remover:");
     buzzer_pi();
 

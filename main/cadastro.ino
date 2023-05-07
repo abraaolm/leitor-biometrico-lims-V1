@@ -52,7 +52,7 @@ void adicionarDigital() {
           id_str += key;
           lcd.print(key);
           buzzer_pi();
-      } else if (key == 'A' && id_str.length() > 0) {
+      } else if (key == '#' && id_str.length() > 0) {
           id_done = true;
       }
   }

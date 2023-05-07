@@ -5,8 +5,7 @@
 #include <Arduino.h>
 #include <Password.h>
 #include <Keypad.h>
-//SCL = SCL
-//SDA = SDA 
+
 const int pinRx = 50;
 const int pinTx = 51;
 
@@ -15,11 +14,14 @@ const int led_vermelho = 9;
 const int rele = 11;
 const int led_amarelo = 12;
 const int buzzer = A1;
-
+const int ldr = A2;
 const byte LINHAS = 4;
 const byte COLUNAS = 4;
 
-Password senha = Password("1");
+int sensorValue = 0;   
+int setpoint = 200; 
+
+Password senha = Password("061723");
 
 const char TECLAS_MATRIZ[LINHAS][COLUNAS] = {
   {'1', '2', '3', 'A'},
@@ -48,6 +50,7 @@ extern void autorizado();
 extern void mensagem();
 extern void mensagem1();
 extern void mensagem2();
+extern void buzzer_pi();
 extern void buzzer_pi3();
 extern void buzzer_pi2();
 extern void bem_vindo();
@@ -67,7 +70,7 @@ uint8_t id;
 bool modo_cadastro = false;
 bool modo_remover = false;
 bool passapadento = false;
-
+bool modo_livre = false;
 void setup() {
 
   Serial.begin(115200);
@@ -80,6 +83,7 @@ void setup() {
   pinMode(led_amarelo, OUTPUT);
   digitalWrite(led_amarelo, LOW);
   pinMode(buzzer, OUTPUT);
+  pinMode(ldr, INPUT);
   digitalWrite(buzzer, LOW);
   //O rele utilizado é invertido, ele precisa inciar em HIGH, e caso queira aciona-lo, mande um pulso LOW
   pinMode(rele, OUTPUT);
@@ -128,6 +132,17 @@ void loop() {
 
 char leitura_teclas = teclado_personalizado.getKey(); // Atribui a variável a leitura do teclado
 
+sensorValue = analogRead(ldr);
+  Serial.println(sensorValue); 
+   if(sensorValue < setpoint){
+ 
+     digitalWrite(rele, 0);
+  
+  } else {
+	 
+	 digitalWrite(rele, 1);
+  
+  }
 
 if (leitura_teclas) { // Se alguma tecla foi pressionada
     digitalWrite(buzzer, HIGH);
@@ -168,6 +183,19 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
       lcd.print("PARA ENTRAR");
       lcd.setCursor(2,2);
       lcd.print("DESTRANCAR A PORTA");
+      
+    }
+    else if (leitura_teclas == 'B') { // Caso a tecla 'D' seja pressionada
+      modo_livre = true;
+      senha.reset(); // Limpa a variável senha
+      Serial.println("modo livre");
+      lcd.clear();
+      lcd.setCursor(3,0);
+      lcd.print("DIGITE A SENHA");
+      lcd.setCursor(4,1);
+      lcd.print("PARA ENTRAR");
+      lcd.setCursor(3,2);
+      lcd.print("NO MODO LIVRE");
       
     }else if (modo_cadastro) { // Caso estejamos no modo cadastro
       if (leitura_teclas == '#') { // Caso a tecla 'A' seja pressionada
@@ -278,6 +306,66 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
         senha.append(leitura_teclas); // Salva o valor da tecla pressionada na variável senha
       }
     
+    }
+    else if (modo_livre) { // Caso estejamos no modo remover
+      if (leitura_teclas == '#') { // Caso a tecla 'A' seja pressionada
+        if (senha.evaluate()) { // Verifica se a senha digitada está correta
+          senha.reset(); // Limpa a senha
+          Serial.println("modo livre");
+          buzzer_pi();
+    lcd.clear();
+while (true) {
+  leitura_teclas = teclado_personalizado.getKey(); // Leia a tecla pressionada novamente
+
+    // Código para ler a variável leitura_teclas
+
+    if (leitura_teclas == 'B') {
+        modo_livre = false;
+                  buzzer_pi();
+            digitalWrite(rele, 1);
+        bem_vindo();
+
+        break; // Sai do loop while
+    }
+
+    senha.reset(); // Limpa a senha
+
+    lcd.setCursor(5, 1);
+    lcd.print("MODO LIVRE");
+    lcd.setCursor(2, 1);
+    lcd.print(" ");
+    delay(100);
+    digitalWrite(rele, 0);
+}
+
+        } else {
+          Serial.println("Senha incorreta!");
+          lcd.clear();
+          lcd.setCursor(3,1);
+          lcd.print("SENHA INCORRETA");
+          digitalWrite(led_vermelho, HIGH);
+          buzzer_pi2();
+          delay(700);
+          digitalWrite(led_vermelho, LOW);
+          bem_vindo();
+        }
+        modo_livre = false;
+      } else if (leitura_teclas == '*') { // Caso a tecla 'B' seja pressionada
+        modo_livre = false;
+        Serial.println("Operação cancelada");
+        lcd.clear();
+        lcd.setCursor(1,1);
+        lcd.print("OPERACAO CANCELADA");
+        buzzer_pi2();
+        delay(500);
+
+        bem_vindo();
+      
+      } else {
+        Serial.print(leitura_teclas);
+        senha.append(leitura_teclas); // Salva o valor da tecla pressionada na variável senha
+      }
+    
     }else { // Caso não estejamos no modo cadastro ou remover
       Serial.println(leitura_teclas); // Exibe a tecla pressionada
     }
@@ -289,7 +377,6 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
   if (digitalRead(pinButton2) == LOW) {
     adicionarDigital();
   } 
-  //byte leitura = getFingerprintID();
   byte leitura = getFingerprintID();
 }
 
@@ -307,7 +394,6 @@ uint8_t getFingerprintID() {
   uint8_t p = finger.getImage();
   switch (p) {
     case FINGERPRINT_OK:
-      //Serial.println("Imagem capturada");
       break;
     case FINGERPRINT_NOFINGER:
       return p;
