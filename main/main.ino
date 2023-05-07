@@ -8,16 +8,15 @@
 
 const int pinRx = 50;
 const int pinTx = 51;
-
 const int led_verde = 10;
 const int led_vermelho = 9;
 const int rele = 11;
 const int led_amarelo = 12;
 const int buzzer = A1;
 const int ldr = A2;
+
 const byte LINHAS = 4;
 const byte COLUNAS = 4;
-
 int sensorValue = 0;   
 int setpoint = 200; 
 
@@ -29,15 +28,11 @@ const char TECLAS_MATRIZ[LINHAS][COLUNAS] = {
   {'7', '8', '9', 'C'},
   {'*', '0', '#', 'D'}
 };
-//id
 
 const byte PINOS_LINHAS[LINHAS] = {45, 43, 41, 39}; 
 const byte PINOS_COLUNAS[COLUNAS] = {37, 35, 33, 31};
 
-Keypad teclado_personalizado = Keypad(makeKeymap(TECLAS_MATRIZ), PINOS_LINHAS, PINOS_COLUNAS, LINHAS, COLUNAS); // Inicia teclado
-
-
-extern const int buzzer;
+Keypad teclado_personalizado = Keypad(makeKeymap(TECLAS_MATRIZ), PINOS_LINHAS, PINOS_COLUNAS, LINHAS, COLUNAS);
 
 extern void removerDigital();
 extern void adicionarDigital();
@@ -55,44 +50,37 @@ extern void buzzer_pi3();
 extern void buzzer_pi2();
 extern void bem_vindo();
 
-LiquidCrystal_I2C lcd(0x3F,20,4);
-  
-#define pinButton 2
-#define pinButton2 3
+bool modo_cadastro = false;
+bool modo_remover = false;
+bool passapadento = false;
+bool modo_livre = false;
+bool grava = false;
 
-bool grava = false; 
+LiquidCrystal_I2C lcd(0x3F,20,4);
 
 SoftwareSerial mySerial(pinTx, pinRx);
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 uint8_t id;
 
-bool modo_cadastro = false;
-bool modo_remover = false;
-bool passapadento = false;
-bool modo_livre = false;
 void setup() {
-
   Serial.begin(115200);
-  delay(100);
   finger.begin(57600);
+  delay(100);
   lcd.init();
   lcd.backlight(); 
   pinMode(led_verde, OUTPUT);
-  digitalWrite(led_verde, LOW);
   pinMode(led_amarelo, OUTPUT);
-  digitalWrite(led_amarelo, LOW);
-  pinMode(buzzer, OUTPUT);
-  pinMode(ldr, INPUT);
-  digitalWrite(buzzer, LOW);
-  //O rele utilizado é invertido, ele precisa inciar em HIGH, e caso queira aciona-lo, mande um pulso LOW
-  pinMode(rele, OUTPUT);
-  digitalWrite(rele, HIGH);
   pinMode(led_vermelho , OUTPUT);
+  pinMode(rele, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  digitalWrite(led_verde, LOW);
+  digitalWrite(led_amarelo, LOW);
   digitalWrite(led_vermelho, LOW);
-  pinMode(pinButton, INPUT_PULLUP);
-  pinMode(pinButton2, INPUT_PULLUP);
-
+  digitalWrite(rele, HIGH);
+  digitalWrite(buzzer, LOW);
+  pinMode(ldr, INPUT);
+  //O rele utilizado é invertido, ele precisa inciar em HIGH, e caso queira aciona-lo, mande um pulso LOW
   if (finger.verifyPassword()) {
     lcd.clear();
     lcd.setCursor(1,1);
@@ -106,7 +94,6 @@ void setup() {
     delay(1000);
     digitalWrite(led_verde, LOW);
     bem_vindo();
-
 }
   else {
     digitalWrite(led_amarelo, HIGH);
@@ -130,29 +117,22 @@ String lastMsg = "";
 
 void loop() {
 
-char leitura_teclas = teclado_personalizado.getKey(); // Atribui a variável a leitura do teclado
-
-sensorValue = analogRead(ldr);
+  char leitura_teclas = teclado_personalizado.getKey();
+  sensorValue = analogRead(ldr);
   Serial.println(sensorValue); 
+//Quando a sala estiver escura, luz apagada a tranca é desbloqueada
    if(sensorValue < setpoint){
- 
      digitalWrite(rele, 0);
-  
   } else {
-	 
 	 digitalWrite(rele, 1);
-  
   }
-
-if (leitura_teclas) { // Se alguma tecla foi pressionada
+  if (leitura_teclas) {
     digitalWrite(buzzer, HIGH);
     delay(50);
     digitalWrite(buzzer, LOW);
-
-    if (leitura_teclas == 'C') { // Caso a tecla 'C' seja pressionada
+    if (leitura_teclas == 'C') {
       modo_cadastro = true;
-      senha.reset(); // Limpa a variável senha
-      Serial.println("Modo cadastro ativado. Digite a senha e pressione A para confirmar ou B para cancelar");
+      senha.reset();
       lcd.clear();
       lcd.setCursor(3,0);
       lcd.print("DIGITE A SENHA");
@@ -160,10 +140,9 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
       lcd.print("PARA ENTRAR");
       lcd.setCursor(1,2);
       lcd.print("NO MODO CADASTRO");
-    } else if (leitura_teclas == 'D') { // Caso a tecla 'D' seja pressionada
+    } else if (leitura_teclas == 'D') {
       modo_remover = true;
-      senha.reset(); // Limpa a variável senha
-      Serial.println("Modo remover ativado. Digite a senha e pressione A para confirmar ou B para cancelar");
+      senha.reset();
       lcd.clear();
       lcd.setCursor(3,0);
       lcd.print("DIGITE A SENHA");
@@ -202,9 +181,6 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
         if (senha.evaluate()) { // Verifica se a senha digitada está correta
           Serial.println("Liberado!");
           adicionarDigital();
-          //digitalWrite(led_verde, HIGH);
-          //delay(500);
-          //digitalWrite(led_verde, LOW);
         } else {
           Serial.println("Senha incorreta!");
           lcd.clear();
@@ -237,9 +213,6 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
           senha.reset(); // Limpa a senha
           Serial.println("Senha removida com sucesso!");
           removerDigital();
-          ///digitalWrite(led_verde, HIGH);
-          ///delay(500);
-          //digitalWrite(led_verde, LOW);
         } else {
           Serial.println("Senha incorreta!");
           lcd.clear();
@@ -275,9 +248,6 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
           senha.reset(); // Limpa a senha
           Serial.println("passapadento");
           autorizado();
-          ///digitalWrite(led_verde, HIGH);
-          ///delay(500);
-          //digitalWrite(led_verde, LOW);
         } else {
           Serial.println("Senha incorreta!");
           lcd.clear();
@@ -316,8 +286,6 @@ if (leitura_teclas) { // Se alguma tecla foi pressionada
     lcd.clear();
 while (true) {
   leitura_teclas = teclado_personalizado.getKey(); // Leia a tecla pressionada novamente
-
-    // Código para ler a variável leitura_teclas
 
     if (leitura_teclas == 'B') {
         modo_livre = false;
@@ -371,12 +339,6 @@ while (true) {
     }
   }
 
-  if (digitalRead(pinButton) == LOW) {
-    removerDigital();
-  }
-  if (digitalRead(pinButton2) == LOW) {
-    adicionarDigital();
-  } 
   byte leitura = getFingerprintID();
 }
 
