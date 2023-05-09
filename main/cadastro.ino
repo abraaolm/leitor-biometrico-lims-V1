@@ -18,11 +18,7 @@ extern void erro_na_comunicacao_2();
 extern void nao_encontrou_digital_2();
 extern void erro_desconhecido_2();
 
-
-
 void adicionarDigital() {
-
-
 
   lcd.clear();
   lcd.setCursor(4,1);
