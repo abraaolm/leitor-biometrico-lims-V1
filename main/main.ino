@@ -5,20 +5,26 @@
 #include <Arduino.h>
 #include <Password.h>
 #include <Keypad.h>
+#include "RTClib.h"
+
+RTC_DS1307 rtc;
+
+char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 const int pinRx = 50;
 const int pinTx = 51;
 const int led_verde = 10;
 const int led_vermelho = 9;
 const int rele = 11;
+const int proximidade = 8;
 const int led_amarelo = 12;
-const int buzzer = A1;
-const int ldr = A2;
+const int buzzer = A0;
+const int ldr = A1;
 
 const byte LINHAS = 4;
 const byte COLUNAS = 4;
-int sensorValue = 0;   
-int setpoint = 200; 
+//int sensorValue = 0;   
+//int setpoint = 200; 
 
 Password senha = Password("061723");
 
@@ -63,7 +69,11 @@ Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 uint8_t id;
 
+
+
 void setup() {
+
+
   Serial.begin(115200);
   finger.begin(57600);
   delay(100);
@@ -79,7 +89,8 @@ void setup() {
   digitalWrite(led_vermelho, LOW);
   digitalWrite(rele, HIGH);
   digitalWrite(buzzer, LOW);
-  pinMode(ldr, INPUT);
+  //pinMode(ldr, INPUT);
+  pinMode(proximidade, INPUT);
   //O rele utilizado é invertido, ele precisa inciar em HIGH, e caso queira aciona-lo, mande um pulso LOW
   if (finger.verifyPassword()) {
     lcd.clear();
@@ -110,20 +121,64 @@ void setup() {
   if (grava) {
     while (  getFingerprintEnroll(id) == -1 );
   }
+
+#ifndef ESP8266
+  while (!Serial);
+#endif
+
+  if (! rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    Serial.flush();
+    while (1) delay(10);
+  }
+
+  if (! rtc.isrunning()) {
+    Serial.println("RTC is NOT running, let's set the time!");
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  }
 }
 
 String lastMsg = "";
 
+
+
 void loop() {
 
+    DateTime now = rtc.now();
+
+    Serial.print(now.year(), DEC);
+    Serial.print('/');
+    Serial.print(now.month(), DEC);
+    Serial.print('/');
+    Serial.print(now.day(), DEC);
+    Serial.print(" (");
+    Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+    Serial.print(") ");
+    Serial.print(now.hour(), DEC);
+    Serial.print(':');
+    Serial.print(now.minute(), DEC);
+    Serial.print(':');
+    Serial.print(now.second(), DEC);
+    Serial.println();
+
+
   char leitura_teclas = teclado_personalizado.getKey();
-  sensorValue = analogRead(ldr);
-  Serial.println(sensorValue); 
-//Quando a sala estiver escura, luz apagada a tranca é desbloqueada
-   if(sensorValue < setpoint){
-     digitalWrite(rele, 0);
-  } else {
-	 digitalWrite(rele, 1);
+
+
+//COMEÇO RTC
+
+if ((now.hour() == 19) && (now.minute() == 0) && (now.second() == 0)){
+    digitalWrite(rele, 0);
+}else if ((now.hour() == 6) && (now.minute() == 0) && (now.second() == 0)){
+    digitalWrite(rele, 1);
+}
+//FIM RTC
+
+//Sensor de presença  
+  if (digitalRead(proximidade) == LOW){
+    digitalWrite(rele, 0);
+    delay(2000);
+    digitalWrite(rele, 1);
   }
   if (leitura_teclas) {
     digitalWrite(buzzer, HIGH);
